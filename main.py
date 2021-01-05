@@ -90,6 +90,13 @@ if __name__ == "__main__":
                 token_attr = "VAR_NAME"
             if token_type == lexer.WHILE:
                 token_attr = "WHILE"
+            if token_type == lexer.FUNC:
+                token_attr = "FUNC"
+            if token_type == lexer.END_FUNC:
+                token_attr = "END_FUNC"
+            if token_type == lexer.RETURN:
+                token_attr = "RETURN"
+
 
             if token_attr is not None:
                 print(f"{token_line} {token_attr}[{token_type}] {token.text}")

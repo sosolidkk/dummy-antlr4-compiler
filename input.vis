@@ -8,6 +8,18 @@ var my_str, my_str2, my_str3: caractere
 var my_bool: logico
 var my_float: real
 
+funcao soma: inteiro
+var aux: inteiro
+inicio
+	aux <- n + m
+	retorne aux
+fimfuncao
+
+funcao soma_com_params (x, y:  inteiro): inteiro
+inicio
+	retorne x + y
+fimfuncao
+
 inicio
 escreva("hello")
 escreva(10)
@@ -27,6 +39,8 @@ a <- 3
 Valor1 <- 1.5
 nome_aluno <- "Jose da Silva"
 sinalizador <- FALSO
+n <- 4
+m <- -9
 
 soma <- 1 + 2
 sub <- 2 - 2
@@ -62,4 +76,11 @@ enquanto j <= 10 faca
     escreva(j)
     j <- 2
 fimenquanto
+
+res <- soma()
+escreva(res)
+
+res <- soma_com_params(n, m)
+escreva(res)
+
 fimalgoritmo
