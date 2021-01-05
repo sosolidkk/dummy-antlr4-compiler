@@ -148,7 +148,7 @@ funcString:
     END_FUNC;
 
 funcVoid:
-    FUNC WS VAR_NAME WS OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS TYPE_VOID
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_VOID
     declarations*?
     BEGIN
         WS* (expressions)* WS*
