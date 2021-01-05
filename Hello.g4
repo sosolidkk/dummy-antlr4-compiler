@@ -116,7 +116,7 @@ whileStatement:
     END_WHILE;
 
 funcInt:
-    FUNC WS VAR_NAME WS OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS TYPE_INT
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_INT
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -124,7 +124,7 @@ funcInt:
     END_FUNC;
 
 funcFloat:
-    FUNC WS VAR_NAME WS OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS TYPE_FLOAT
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_FLOAT
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -132,7 +132,7 @@ funcFloat:
     END_FUNC;
 
 funcBool:
-    FUNC WS VAR_NAME WS OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS TYPE_BOOL
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_BOOL
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -140,7 +140,7 @@ funcBool:
     END_FUNC;
 
 funcString:
-    FUNC WS VAR_NAME WS OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS TYPE_STRING
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_STRING
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -152,7 +152,7 @@ funcVoid:
     declarations*?
     BEGIN
         WS* (expressions)* WS*
-        WS* (RETURN condition) WS*
+        WS* (RETURN) WS*
     END_FUNC;
 
 funcCall:
