@@ -62,6 +62,8 @@ if __name__ == "__main__":
                 token_attr = "IF"
             if token_type == lexer.INT:
                 token_attr = "INT"
+            if token_type == lexer.MOD:
+                token_attr = "MOD"
             if token_type == lexer.OPEN_PARENTHESIS:
                 token_attr = "OPEN_PARENTHESIS"
             if token_type == lexer.PRINT:

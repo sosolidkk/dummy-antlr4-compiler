@@ -1,5 +1,17 @@
 grammar Hello;
-prog: (programName declarations* BEGIN expressions* END)*  EOF;
+prog:   (
+            COMMENT* 
+            programName
+            COMMENT*
+            declarations*
+            COMMENT*
+            BEGIN
+            COMMENT*
+            expressions*
+            COMMENT*
+            END
+            COMMENT*
+        )*  EOF;
 
 /* PARSER RULES */
 
@@ -52,6 +64,7 @@ binaryOperator:
     | '-'
     | '*'
     | '/'
+    | '%'
     | '>'
     | '<'
     | '<='
@@ -63,8 +76,9 @@ binaryOperator:
 
 preUnaryOperator: ('!' | '-');
 posUnaryOperator: ('++' | '--');
+exponentialOperator: '^';
 
-operation: (preUnaryOperator | posUnaryOperator)? innerOperation posUnaryOperator binaryOperator;
+operation: (preUnaryOperator | posUnaryOperator)? innerOperation posUnaryOperator exponentialOperator binaryOperator;
 innerOperation: (VAR_NAME | OPEN_PARENTHESIS operation CLOSE_PARENTHESIS);
 
 condition: 
@@ -124,6 +138,7 @@ COLON: ':';
 
 ASSIGNMENT: '<-';
 DENY: 'nao';
+MOD: 'MOD';
 
 TYPE_STRING: 'caractere';
 TYPE_INT: 'inteiro';

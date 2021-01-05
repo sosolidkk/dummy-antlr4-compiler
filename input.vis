@@ -1,4 +1,7 @@
 algoritmo "helloWorld"
+
+// Comment example
+
 var my_int: inteiro
 var my_str: caractere
 var my_str, my_str2, my_str3: caractere
@@ -9,6 +12,7 @@ inicio
 escreva("hello")
 escreva(10)
 escreva(-10)
+// This line will be ignored
 escreva(10.5)
 escreva(-10.5)
 escreva(VERDADEIRO)
@@ -23,6 +27,16 @@ a <- 3
 Valor1 <- 1.5
 nome_aluno <- "Jose da Silva"
 sinalizador <- FALSO
+
+soma <- 1 + 2
+sub <- 2 - 2
+mult <- 3 * 3
+div <- 4 / 4
+
+resto <- 8 MOD 3
+resto_2 <- 9 % 2
+
+exp <- 8^2
 
 se VERDADEIRO entao
     escreva("if statement")
