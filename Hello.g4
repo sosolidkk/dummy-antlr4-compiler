@@ -1,9 +1,11 @@
 grammar Hello;
 prog:   (
-            COMMENT* 
+            COMMENT*
             programName
             COMMENT*
             declarations*
+            COMMENT*
+            funcDeclarations*
             COMMENT*
             BEGIN
             COMMENT*
@@ -24,6 +26,13 @@ declarations:
     | varFloat
     | varBool;
 
+funcDeclarations:
+    funcInt
+    | funcBool
+    | funcFloat
+    | funcString
+    | funcVoid;
+
 expressions:
     printer
     | reader
@@ -31,7 +40,8 @@ expressions:
     | constString
     | constBool
     | ifStatement
-    | whileStatement;
+    | whileStatement
+    | funcCall;
 
 comment_line: WS* COMMENT*;
 
@@ -81,7 +91,7 @@ exponentialOperator: '^';
 operation: (preUnaryOperator | posUnaryOperator)? innerOperation posUnaryOperator exponentialOperator binaryOperator;
 innerOperation: (VAR_NAME | OPEN_PARENTHESIS operation CLOSE_PARENTHESIS);
 
-condition: 
+condition:
     BOOL
     | INT
     | FLOAT
@@ -89,7 +99,8 @@ condition:
     | innerCodition
     | condition binaryOperator condition
     | (preUnaryOperator | posUnaryOperator) condition
-    | condition posUnaryOperator;
+    | condition posUnaryOperator
+    | funcCall;
 
 innerCodition: VAR_NAME | OPEN_PARENTHESIS condition CLOSE_PARENTHESIS;
 
@@ -103,6 +114,49 @@ whileStatement:
     WS* WHILE OPEN_PARENTHESIS? condition CLOSE_PARENTHESIS? DO
     WS* expressions* WS*
     END_WHILE;
+
+funcInt:
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_INT
+    declarations*?
+    BEGIN
+        WS* (expressions)* WS*
+        WS* (RETURN condition) WS*
+    END_FUNC;
+
+funcFloat:
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_FLOAT
+    declarations*?
+    BEGIN
+        WS* (expressions)* WS*
+        WS* (RETURN condition) WS*
+    END_FUNC;
+
+funcBool:
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_BOOL
+    declarations*?
+    BEGIN
+        WS* (expressions)* WS*
+        WS* (RETURN condition) WS*
+    END_FUNC;
+
+funcString:
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_STRING
+    declarations*?
+    BEGIN
+        WS* (expressions)* WS*
+        WS* (RETURN condition) WS*
+    END_FUNC;
+
+funcVoid:
+    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_VOID
+    declarations*?
+    BEGIN
+        WS* (expressions)* WS*
+        WS* (RETURN) WS*
+    END_FUNC;
+
+funcCall:
+    VAR_NAME OPEN_PARENTHESIS (condition (COMMA condition)*)? CLOSE_PARENTHESIS;
 
 /* LEXER RULES */
 /* FRAGMENTS */
@@ -140,10 +194,15 @@ ASSIGNMENT: '<-';
 DENY: 'nao';
 MOD: 'MOD';
 
+FUNC: 'funcao';
+END_FUNC: 'fimfuncao';
+RETURN: 'retorne';
+
 TYPE_STRING: 'caractere';
 TYPE_INT: 'inteiro';
 TYPE_FLOAT: 'real';
 TYPE_BOOL: 'logico';
+TYPE_VOID: 'void';
 
 STRING: ["][a-zA-Z0-9 $&+,:;=?@#|'<>.^*()_%-]+ ["];
 INT: [-]? DIGIT+;
