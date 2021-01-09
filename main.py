@@ -97,7 +97,6 @@ if __name__ == "__main__":
             if token_type == lexer.RETURN:
                 token_attr = "RETURN"
 
-
             if token_attr is not None:
                 print(f"{token_line} {token_attr}[{token_type}] {token.text}")
             else:
