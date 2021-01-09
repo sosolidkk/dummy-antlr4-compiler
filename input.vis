@@ -3,10 +3,10 @@ algoritmo "helloWorld"
 // Comment example
 
 var my_int: inteiro
-var my_str: caractere
-var my_str, my_str2, my_str3: caractere
-var my_bool: logico
-var my_float: real
+    my_str: caractere
+    my_str, my_str2, my_str3: caractere
+    my_bool: logico
+    my_float: real
 
 funcao soma: inteiro
 var aux: inteiro

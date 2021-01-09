@@ -21,10 +21,8 @@ programName:
     PROGRAM STRING WS*;
 
 declarations:
-    varString
-    | varInt
-    | varFloat
-    | varBool;
+    uniqueLineVar;
+
 
 funcDeclarations:
     funcInt
@@ -63,6 +61,9 @@ varFloat:
     VAR VAR_NAME (COMMA VAR_NAME)* COLON WS* TYPE_FLOAT WS*;
 varBool:
     VAR VAR_NAME (COMMA VAR_NAME)* COLON WS* TYPE_BOOL WS*;
+
+uniqueLineVar:
+    VAR (VAR_NAME COLOM WS* (TYPE_STRING | TYPE_INT | TYPE_FLOAT | TYPE_BOOL) BREAK_LINE*)+;
 
 // STILL MISSING OPERATION WITH + SYMBOL
 constNumeric: VAR_NAME ASSIGNMENT (INT | FLOAT) WS*;
