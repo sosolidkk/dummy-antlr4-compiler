@@ -98,6 +98,9 @@ if __name__ == "__main__":
                 token_attr = "RETURN"
 
             if token_attr is not None:
-                print(f"{token_line} {token_attr}[{token_type}] {token.text}")
+                if "BREAK_LINE" in token_attr:
+                    print(f"{token_line} {token_attr}[{token_type}] \\n | \\r")
+                else:
+                    print(f"{token_line} {token_attr}[{token_type}] {token.text}")
             else:
                 print(f"{token_line} None[{token_type}] {token.text}")

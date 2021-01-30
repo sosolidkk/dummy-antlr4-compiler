@@ -64,7 +64,7 @@ varBool:
 
 uniqueLineVar:
     VAR 
-        (VAR_NAME (COMMA VAR_NAME)* COLOM WS* 
+        (VAR_NAME (COMMA VAR_NAME)* COLON WS* 
             (TYPE_STRING | TYPE_INT | TYPE_FLOAT | TYPE_BOOL) 
         BREAK_LINE*)+;
 
@@ -215,5 +215,5 @@ BOOL: 'VERDADEIRO' | 'FALSO';
 
 VAR_NAME: [a-zA-Z]+ [_a-zA-Z0-9]*;
 COMMENT: '//' (.)*? '\n' -> skip;
-WS: ('\t' | ' ' | '\r' | '\n'| '\u000C')+ -> skip;
+WS: ('\t' | ' ' | '\u000C')+ -> skip;
 BREAK_LINE: ('\n' | '\r');
