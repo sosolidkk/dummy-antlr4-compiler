@@ -209,7 +209,7 @@ TYPE_FLOAT: 'real';
 TYPE_BOOL: 'logico';
 TYPE_VOID: 'void';
 
-STRING: ["][a-zA-Z0-9 $&+,:;=?@#|'<>.^*()_%-]+ ["];
+STRING: ["][a-zA-Z0-9 $&+,:;=?@#|'<>.^*()_\\"%-]+["];
 INT: [-]? DIGIT+;
 FLOAT: [-]? DIGIT+ ([.]DIGIT+)?;
 BOOL: 'VERDADEIRO' | 'FALSO';
