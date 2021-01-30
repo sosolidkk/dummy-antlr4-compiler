@@ -1,6 +1,7 @@
 import sys
 
 from antlr4 import CommonTokenStream, FileStream, ParseTreeWalker, Token
+from antlr4.tree.Trees import Trees
 
 from HelloLexer import HelloLexer
 from HelloListener import HelloListener
@@ -8,7 +9,7 @@ from HelloParser import HelloParser
 
 
 class HelloPrintListener(HelloListener):
-    def foo():
+    def foo(self):
         pass
 
 
@@ -104,3 +105,15 @@ if __name__ == "__main__":
                     print(f"{token_line} {token_attr}[{token_type}] {token.text}")
             else:
                 print(f"{token_line} None[{token_type}] {token.text}")
+
+    input_stream = FileStream(sys.argv[1], encoding="utf8")
+    lexer = HelloLexer(input=input_stream)
+    tokens = CommonTokenStream(lexer=lexer)
+    parser = HelloParser(tokens)
+    printer = HelloPrintListener()
+    walker = ParseTreeWalker()
+
+    tree = parser.prog()
+    walker.walk(printer, tree)
+
+    print(str(Trees.toStringTree(tree, None, parser)))

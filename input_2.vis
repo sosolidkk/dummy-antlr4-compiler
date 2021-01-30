@@ -1,7 +1,5 @@
 algoritmo "fatorial"
-
 var n, res: inteiro
-
 funcao fat(n: inteiro): inteiro
 var i, f: inteiro
 inicio
@@ -13,9 +11,9 @@ inicio
 	fimenquanto
 	retorne f
 fimfuncao
-
 inicio
+// Comment
 leia(n)
 res <- fat(n)
-escreva (res)
+escreva(res)
 fimalgoritmo

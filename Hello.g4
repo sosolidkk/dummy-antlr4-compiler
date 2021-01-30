@@ -1,47 +1,47 @@
 grammar Hello;
 prog:   (
-            COMMENT*
+            comment_line*
             programName
-            COMMENT*
-            declarations*
-            COMMENT*
-            funcDeclarations*
-            COMMENT*
-            BEGIN
-            COMMENT*
-            expressions*
-            COMMENT*
+            comment_line*
+            declarations* BREAK_LINE
+            comment_line*
+            funcDeclarations* BREAK_LINE
+            comment_line*
+            BEGIN BREAK_LINE
+            comment_line*
+            expressions* BREAK_LINE
+            comment_line*
             END
-            COMMENT*
+            comment_line*
         )*  EOF;
 
 /* PARSER RULES */
 
 programName:
-    PROGRAM STRING WS*;
+    PROGRAM STRING WS* BREAK_LINE;
 
 declarations:
     uniqueLineVar;
 
 
 funcDeclarations:
-    funcInt
-    | funcBool
-    | funcFloat
-    | funcString
-    | funcVoid;
+    funcInt BREAK_LINE
+    | funcBool BREAK_LINE
+    | funcFloat BREAK_LINE
+    | funcString BREAK_LINE
+    | funcVoid BREAK_LINE;
 
 expressions:
-    printer
-    | reader
-    | constNumeric
-    | constString
-    | constBool
-    | ifStatement
-    | whileStatement
-    | funcCall;
+    printer BREAK_LINE
+    | reader BREAK_LINE
+    | constNumeric BREAK_LINE
+    | constString BREAK_LINE
+    | constBool BREAK_LINE
+    | ifStatement BREAK_LINE
+    | whileStatement BREAK_LINE
+    | funcCall BREAK_LINE;
 
-comment_line: WS* COMMENT*;
+comment_line: WS* COMMENT* WS* BREAK_LINE;
 
 printer: printSingleValue | printMultipleValues;
 printSingleValue:
@@ -69,9 +69,9 @@ uniqueLineVar:
         BREAK_LINE*)+;
 
 // STILL MISSING OPERATION WITH + SYMBOL
-constNumeric: VAR_NAME ASSIGNMENT (INT | FLOAT) WS*;
-constString: VAR_NAME ASSIGNMENT STRING WS*;
-constBool: VAR_NAME ASSIGNMENT BOOL WS*;
+constNumeric: VAR_NAME WS* ASSIGNMENT WS* (INT | FLOAT) WS*;
+constString: VAR_NAME WS* ASSIGNMENT WS* STRING WS*;
+constBool: VAR_NAME WS* ASSIGNMENT WS* BOOL WS*;
 
 binaryOperator:
     '+'
@@ -120,7 +120,7 @@ whileStatement:
     END_WHILE;
 
 funcInt:
-    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_INT
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_INT
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -128,7 +128,7 @@ funcInt:
     END_FUNC;
 
 funcFloat:
-    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_FLOAT
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_FLOAT
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -136,7 +136,7 @@ funcFloat:
     END_FUNC;
 
 funcBool:
-    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_BOOL
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_BOOL
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -144,7 +144,7 @@ funcBool:
     END_FUNC;
 
 funcString:
-    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_STRING
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_STRING
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -152,7 +152,7 @@ funcString:
     END_FUNC;
 
 funcVoid:
-    FUNC WS* VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON WS* TYPE_VOID
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_VOID
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -214,6 +214,6 @@ FLOAT: [-]? DIGIT+ ([.]DIGIT+)?;
 BOOL: 'VERDADEIRO' | 'FALSO';
 
 VAR_NAME: [a-zA-Z]+ [_a-zA-Z0-9]*;
-COMMENT: '//' (.)*? '\n' -> skip;
+BREAK_LINE: '\r\n'|'\n'|'\r';
+COMMENT: '//' (.)*? -> skip;
 WS: ('\t' | ' ' | '\u000C')+ -> skip;
-BREAK_LINE: ('\n' | '\r');

@@ -1,7 +1,5 @@
 algoritmo "helloWorld"
-
-// Comment example
-
+//
 var my_int: inteiro
     my_str: caractere
     my_str, my_str2, my_str3: caractere
