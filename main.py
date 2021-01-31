@@ -33,8 +33,6 @@ if __name__ == "__main__":
                 token_attr = "BEGIN"
             if token_type == lexer.BOOL:
                 token_attr = "BOOL"
-            if token_type == lexer.BREAK_LINE:
-                token_attr = "BREAK_LINE"
             if token_type == lexer.CLOSE_PARENTHESIS:
                 token_attr = "CLOSE_PARENTHESIS"
             if token_type == lexer.COLON:
@@ -99,10 +97,7 @@ if __name__ == "__main__":
                 token_attr = "RETURN"
 
             if token_attr is not None:
-                if "BREAK_LINE" in token_attr:
-                    print(f"{token_line} {token_attr}[{token_type}] \\n | \\r")
-                else:
-                    print(f"{token_line} {token_attr}[{token_type}] {token.text}")
+                print(f"{token_line} {token_attr}[{token_type}] {token.text}")
             else:
                 print(f"{token_line} None[{token_type}] {token.text}")
 

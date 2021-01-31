@@ -3,13 +3,13 @@ prog:   (
             comment_line*
             programName
             comment_line*
-            declarations* BREAK_LINE
+            declarations*
             comment_line*
-            funcDeclarations* BREAK_LINE
+            funcDeclarations*
             comment_line*
-            BEGIN BREAK_LINE
+            BEGIN
             comment_line*
-            expressions* BREAK_LINE
+            expressions*
             comment_line*
             END
             comment_line*
@@ -18,30 +18,31 @@ prog:   (
 /* PARSER RULES */
 
 programName:
-    PROGRAM STRING WS* BREAK_LINE;
+    PROGRAM STRING WS*;
 
 declarations:
     uniqueLineVar;
 
 
 funcDeclarations:
-    funcInt BREAK_LINE
-    | funcBool BREAK_LINE
-    | funcFloat BREAK_LINE
-    | funcString BREAK_LINE
-    | funcVoid BREAK_LINE;
+    funcInt
+    | funcBool
+    | funcFloat
+    | funcString
+    | funcVoid;
 
 expressions:
-    printer BREAK_LINE
-    | reader BREAK_LINE
-    | constNumeric BREAK_LINE
-    | constString BREAK_LINE
-    | constBool BREAK_LINE
-    | ifStatement BREAK_LINE
-    | whileStatement BREAK_LINE
-    | funcCall BREAK_LINE;
+    printer
+    | reader
+    | constOperations
+    | constNumeric
+    | constString
+    | constBool
+    | ifStatement
+    | whileStatement
+    | funcCall;
 
-comment_line: WS* COMMENT* WS* BREAK_LINE;
+comment_line: WS* COMMENT+;
 
 printer: printSingleValue | printMultipleValues;
 printSingleValue:
@@ -66,20 +67,27 @@ uniqueLineVar:
     VAR 
         (VAR_NAME (COMMA VAR_NAME)* COLON WS* 
             (TYPE_STRING | TYPE_INT | TYPE_FLOAT | TYPE_BOOL) 
-        BREAK_LINE*)+;
+    *)+;
+
+uniqueLineMultiDeclarations: VAR (uniqueLineDeclaration COLON TYPES)*;
+uniqueLineDeclaration: VAR_NAME | (VAR_NAME COMMA TYPES)*;
 
 // STILL MISSING OPERATION WITH + SYMBOL
-constNumeric: VAR_NAME WS* ASSIGNMENT WS* (INT | FLOAT) WS*;
-constString: VAR_NAME WS* ASSIGNMENT WS* STRING WS*;
-constBool: VAR_NAME WS* ASSIGNMENT WS* BOOL WS*;
+constNumeric: VAR_NAME ASSIGNMENT (INT | FLOAT) WS*;
+constString: VAR_NAME ASSIGNMENT STRING WS*;
+constBool: VAR_NAME ASSIGNMENT BOOL WS*;
+constOperations: VAR_NAME ASSIGNMENT VAR_NAME ((arithmeticOperator | binaryOperator) (VAR_NAME | (INT | FLOAT)))*;
 
-binaryOperator:
+arithmeticOperator:
     '+'
     | '-'
     | '*'
     | '/'
     | '%'
-    | '>'
+    | '^';
+
+binaryOperator:
+    '>'
     | '<'
     | '<='
     | '>='
@@ -90,9 +98,8 @@ binaryOperator:
 
 preUnaryOperator: ('!' | '-');
 posUnaryOperator: ('++' | '--');
-exponentialOperator: '^';
 
-operation: (preUnaryOperator | posUnaryOperator)? innerOperation posUnaryOperator exponentialOperator binaryOperator;
+operation: (preUnaryOperator | posUnaryOperator)? innerOperation binaryOperator arithmeticOperator;
 innerOperation: (VAR_NAME | OPEN_PARENTHESIS operation CLOSE_PARENTHESIS);
 
 condition:
@@ -207,13 +214,13 @@ TYPE_INT: 'inteiro';
 TYPE_FLOAT: 'real';
 TYPE_BOOL: 'logico';
 TYPE_VOID: 'void';
+TYPES: ('caractere' | 'inteiro' | 'real' | 'logico');
 
 STRING: ["][a-zA-Z0-9 $&+,:;=?@#|'<>.^*()_%-]+ ["];
 INT: [-]? DIGIT+;
 FLOAT: [-]? DIGIT+ ([.]DIGIT+)?;
 BOOL: 'VERDADEIRO' | 'FALSO';
 
-VAR_NAME: [a-zA-Z]+ [_a-zA-Z0-9]*;
-BREAK_LINE: '\r\n'|'\n'|'\r';
+VAR_NAME: [a-zA-Z]+[a-zA-Z0-9_]*;
 COMMENT: '//' (.)*? -> skip;
-WS: ('\t' | ' ' | '\u000C')+ -> skip;
+WS: [ \t\u000C\n\r] -> skip;
