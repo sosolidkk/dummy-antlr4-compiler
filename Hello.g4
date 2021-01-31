@@ -15,15 +15,28 @@ prog:   (
             comment_line*
         )*  EOF;
 
-/* PARSER RULES */
-
+// PARSER RULES
 programName:
     PROGRAM STRING WS*;
 
+// VAR DECLARATIONS RULEs
 declarations:
-    uniqueLineVar;
+    uniqueLineMultiDeclarations;
 
+uniqueLineVar:
+    VAR 
+        (VAR_NAME (COMMA VAR_NAME)* COLON WS* 
+            (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)
+    *)+;
 
+uniqueLineMultiDeclarations:
+    VAR (uniqueLineDeclaration COLON (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL))+;
+uniqueLineDeclaration: (VAR_NAME | (VAR_NAME COMMA uniqueLineDeclaration)*);
+funcVarDeclaration:
+    VAR_NAME COLON (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)
+        (SEMI_COLON WS* VAR_NAME COLON (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL))*;
+
+// FUNC DECLARATIONS RULE
 funcDeclarations:
     funcInt
     | funcBool
@@ -31,10 +44,12 @@ funcDeclarations:
     | funcString
     | funcVoid;
 
+// EXPRESSIONS RULE
 expressions:
     printer
     | reader
     | constOperations
+    | constFunc
     | constNumeric
     | constString
     | constBool
@@ -44,39 +59,23 @@ expressions:
 
 comment_line: WS* COMMENT+;
 
+// PRINTER RULEs
 printer: printSingleValue | printMultipleValues;
 printSingleValue:
     PRINT WS* OPEN_PARENTHESIS (STRING | INT | FLOAT | BOOL) CLOSE_PARENTHESIS WS*;
 printMultipleValues:
     PRINT OPEN_PARENTHESIS ((STRING | VAR_NAME) (COMMA (STRING | VAR_NAME))*)+ CLOSE_PARENTHESIS;
 
+// READER RULES
 reader: readSingleValue;
 readSingleValue: READ WS* OPEN_PARENTHESIS (VAR_NAME) CLOSE_PARENTHESIS WS*;
-//readMultipleValues: ;
-
-varString:
-    VAR VAR_NAME (COMMA VAR_NAME)* COLON WS* TYPE_STRING WS*;
-varInt:
-    VAR VAR_NAME (COMMA VAR_NAME)* COLON WS* TYPE_INT WS*;
-varFloat:
-    VAR VAR_NAME (COMMA VAR_NAME)* COLON WS* TYPE_FLOAT WS*;
-varBool:
-    VAR VAR_NAME (COMMA VAR_NAME)* COLON WS* TYPE_BOOL WS*;
-
-uniqueLineVar:
-    VAR 
-        (VAR_NAME (COMMA VAR_NAME)* COLON WS* 
-            (TYPE_STRING | TYPE_INT | TYPE_FLOAT | TYPE_BOOL) 
-    *)+;
-
-uniqueLineMultiDeclarations: VAR (uniqueLineDeclaration COLON TYPES)*;
-uniqueLineDeclaration: VAR_NAME | (VAR_NAME COMMA TYPES)*;
 
 // STILL MISSING OPERATION WITH + SYMBOL
 constNumeric: VAR_NAME ASSIGNMENT (INT | FLOAT) WS*;
 constString: VAR_NAME ASSIGNMENT STRING WS*;
 constBool: VAR_NAME ASSIGNMENT BOOL WS*;
-constOperations: VAR_NAME ASSIGNMENT VAR_NAME ((arithmeticOperator | binaryOperator) (VAR_NAME | (INT | FLOAT)))*;
+constOperations: VAR_NAME ASSIGNMENT VAR_NAME ((arithmeticOperator | relationalOperator) (VAR_NAME | (INT | FLOAT)))*;
+constFunc: VAR_NAME ASSIGNMENT funcCall;
 
 arithmeticOperator:
     '+'
@@ -86,80 +85,67 @@ arithmeticOperator:
     | '%'
     | '^';
 
-binaryOperator:
+relationalOperator:
     '>'
     | '<'
     | '<='
     | '>='
-    | '=='
-    | '!='
-    | '&&'
-    | '||';
+    | '='
+    | '<>';
 
-preUnaryOperator: ('!' | '-');
-posUnaryOperator: ('++' | '--');
+logicalOperator:
+    AND
+    | OR
+    | DENY;
 
-operation: (preUnaryOperator | posUnaryOperator)? innerOperation binaryOperator arithmeticOperator;
-innerOperation: (VAR_NAME | OPEN_PARENTHESIS operation CLOSE_PARENTHESIS);
-
-condition:
-    BOOL
-    | INT
-    | FLOAT
-    | STRING
-    | innerCodition
-    | condition binaryOperator condition
-    | (preUnaryOperator | posUnaryOperator) condition
-    | condition posUnaryOperator
-    | funcCall;
-
-innerCodition: VAR_NAME | OPEN_PARENTHESIS condition CLOSE_PARENTHESIS;
-
+// IF STATEMENT RULE
 ifStatement:
-    WS* IF OPEN_PARENTHESIS? condition CLOSE_PARENTHESIS? THEN
+    IF OPEN_PARENTHESIS? (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)) (relationalOperator | logicalOperator) (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)) CLOSE_PARENTHESIS? THEN
     WS* expressions* WS*
     (ELSE expressions* WS*)*
     END_IF;
 
+// WHILE STATEMENT RULE
 whileStatement:
-    WS* WHILE OPEN_PARENTHESIS? condition CLOSE_PARENTHESIS? DO
+    WHILE OPEN_PARENTHESIS? (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)) relationalOperator (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)) CLOSE_PARENTHESIS? DO
     WS* expressions* WS*
     END_WHILE;
 
+// FUNC DECLARATIONS RULES
 funcInt:
-    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_INT
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_INT
     declarations*?
     BEGIN
-        WS* (expressions)* WS*
-        WS* (RETURN condition) WS*
+        (expressions)*
+        (RETURN (TYPE_INT | VAR_NAME))
     END_FUNC;
 
 funcFloat:
-    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_FLOAT
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_FLOAT
     declarations*?
     BEGIN
         WS* (expressions)* WS*
-        WS* (RETURN condition) WS*
+        WS* (RETURN (TYPE_FLOAT | VAR_NAME)) WS*
     END_FUNC;
 
 funcBool:
-    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_BOOL
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_BOOL
     declarations*?
     BEGIN
         WS* (expressions)* WS*
-        WS* (RETURN condition) WS*
+        WS* (RETURN (TYPE_BOOL | VAR_NAME)) WS*
     END_FUNC;
 
 funcString:
-    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_STRING
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_STRING
     declarations*?
     BEGIN
         WS* (expressions)* WS*
-        WS* (RETURN condition) WS*
+        WS* (RETURN (TYPE_STRING | VAR_NAME)) WS*
     END_FUNC;
 
 funcVoid:
-    FUNC VAR_NAME WS* OPEN_PARENTHESIS? declarations*? CLOSE_PARENTHESIS? COLON TYPE_VOID
+    FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_VOID
     declarations*?
     BEGIN
         WS* (expressions)* WS*
@@ -167,7 +153,16 @@ funcVoid:
     END_FUNC;
 
 funcCall:
-    VAR_NAME OPEN_PARENTHESIS (condition (COMMA condition)*)? CLOSE_PARENTHESIS;
+    VAR_NAME 
+    OPEN_PARENTHESIS 
+        (VAR_NAME | 
+            (
+                VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL) 
+                    (relationalOperator | logicalOperator) 
+                (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL))
+            )*
+        ) 
+    CLOSE_PARENTHESIS;
 
 /* LEXER RULES */
 /* FRAGMENTS */
@@ -202,6 +197,8 @@ SEMI_COLON: ';';
 COLON: ':';
 
 ASSIGNMENT: '<-';
+OR: 'ou';
+AND: 'e';
 DENY: 'nao';
 MOD: 'MOD';
 
@@ -214,7 +211,6 @@ TYPE_INT: 'inteiro';
 TYPE_FLOAT: 'real';
 TYPE_BOOL: 'logico';
 TYPE_VOID: 'void';
-TYPES: ('caractere' | 'inteiro' | 'real' | 'logico');
 
 STRING: ["][a-zA-Z0-9 $&+,:;=?@#|'<>.^*()_%-]+ ["];
 INT: [-]? DIGIT+;
@@ -222,5 +218,5 @@ FLOAT: [-]? DIGIT+ ([.]DIGIT+)?;
 BOOL: 'VERDADEIRO' | 'FALSO';
 
 VAR_NAME: [a-zA-Z]+[a-zA-Z0-9_]*;
-COMMENT: '//' (.)*? -> skip;
+COMMENT: '//'.*?[\n] -> skip;
 WS: [ \t\u000C\n\r] -> skip;
