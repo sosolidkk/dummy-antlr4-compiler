@@ -31,5 +31,6 @@ fimse
 // Testando o enquanto
 enquanto 10 <= j faca
     escreva(j)
+escreva(dummy_foo(x, y))
 fimenquanto
 fimalgoritmo

@@ -62,7 +62,7 @@ comment_line: WS* COMMENT+;
 // PRINTER RULEs
 printer: printSingleValue | printMultipleValues;
 printSingleValue:
-    PRINT WS* OPEN_PARENTHESIS (STRING | INT | FLOAT | BOOL) CLOSE_PARENTHESIS WS*;
+    PRINT WS* OPEN_PARENTHESIS (STRING | INT | FLOAT | BOOL | funcCall) CLOSE_PARENTHESIS WS*;
 printMultipleValues:
     PRINT OPEN_PARENTHESIS ((STRING | VAR_NAME) (COMMA (STRING | VAR_NAME))*)+ CLOSE_PARENTHESIS;
 
@@ -153,15 +153,12 @@ funcVoid:
     END_FUNC;
 
 funcCall:
-    VAR_NAME 
-    OPEN_PARENTHESIS 
-        (VAR_NAME | 
-            (
-                VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL) 
-                    (relationalOperator | logicalOperator) 
-                (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL))
-            )*
-        ) 
+    VAR_NAME
+    OPEN_PARENTHESIS
+        (
+            (VAR_NAME | ( INT | FLOAT | BOOL | STRING))+ |
+            (COMMA (VAR_NAME | (INT | FLOAT | BOOL | STRING)))
+        )+
     CLOSE_PARENTHESIS;
 
 /* LEXER RULES */
