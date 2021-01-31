@@ -2,19 +2,30 @@ import sys
 
 from antlr4 import CommonTokenStream, FileStream, ParseTreeWalker, Token
 from antlr4.tree.Trees import Trees
+from antlr4.tree.Tree import TerminalNodeImpl
 
 from HelloLexer import HelloLexer
 from HelloListener import HelloListener
 from HelloParser import HelloParser
 
+tree_representation = ""
 
-class HelloPrintListener(HelloListener):
-    def foo(self):
-        pass
+
+def generate_indented_tree(tree, rule_names, indent=0):
+    global tree_representation
+    if tree.getText() == "<EOF>":
+        return
+    elif isinstance(tree, TerminalNodeImpl):
+        tree_representation += ("    " * indent) + f"TOKEN='{tree.getText()}'\n"
+    else:
+        tree_representation += ("    " * indent) + f"{rule_names[tree.getRuleIndex()]}\n"
+        for child in tree.children:
+            generate_indented_tree(child, rule_names, indent + 1)
 
 
 if __name__ == "__main__":
     input_data = FileStream(sys.argv[1])
+    tokens_print = []
 
     lexer = HelloLexer(input_data)
     stream = CommonTokenStream(lexer)
@@ -97,18 +108,29 @@ if __name__ == "__main__":
                 token_attr = "RETURN"
 
             if token_attr is not None:
-                print(f"{token_line} {token_attr}[{token_type}] {token.text}")
+                tokens_print.append(f"{token_line} {token_attr}[{token_type}] {token.text}\n")
             else:
-                print(f"{token_line} None[{token_type}] {token.text}")
+                tokens_print.append(f"{token_line} None[{token_type}] {token.text}\n")
 
     input_stream = FileStream(sys.argv[1], encoding="utf8")
     lexer = HelloLexer(input=input_stream)
     tokens = CommonTokenStream(lexer=lexer)
     parser = HelloParser(tokens)
-    printer = HelloPrintListener()
+    printer = HelloListener()
     walker = ParseTreeWalker()
 
     tree = parser.prog()
-    walker.walk(printer, tree)
+    generate_indented_tree(tree, parser.ruleNames)
 
-    print(str(Trees.toStringTree(tree, None, parser)))
+    with open("tree_example.txt", "w") as file:
+        file.write("-- GENERATED TOKENS BEGIN --\n")
+        file.writelines(tokens_print)
+        file.write("-- GENERATED TOKENS END --\n")
+
+        file.write("\n-- GENERATED TREE INDENT BEGIN --\n")
+        file.write(tree_representation)
+        file.write("-- GENERATED TREE INDENT END --\n")
+
+        file.write("\n-- GENERATED TREE BEGIN --\n")
+        file.write(str(Trees.toStringTree(tree, None, parser)))
+        file.write("-- GENERATED TREE END --\n")
