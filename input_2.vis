@@ -1,6 +1,6 @@
 algoritmo "fatorial"
 var n, res: inteiro
-funcao fat(n: inteiro): inteiro
+funcao fat(n: inteiro; dummy: inteiro): inteiro
 var i, f: inteiro
 inicio
 	i <- 1

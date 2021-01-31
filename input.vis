@@ -1,11 +1,35 @@
 algoritmo "Hello World"
+// Testando declaracao
 var i, j: inteiro
+    k, y: logico
+    z, w: real
+    str: caractere
+// Testando funcao
+funcao dummy_foo(param: inteiro; param_2: inteiro): logico
+var aux: logico
 inicio
-// Apenas mostra a mensagem hello world
+    aux <- param < param_2
+    retorne aux
+fimfuncao
+
+inicio
+// Testando ler e escrever
 escreva("Ola, mundo")
 escreva(i)
+leia(j)
+// Testando atribuicoes
 j <- i + 1
 i <- j - i
 j <- j * i
 i <- j / i
+// Testando o if
+se 10 <> 11 entao
+    escreva("Diferente")
+senao
+    escreva("Igual")
+fimse
+// Testando o enquanto
+enquanto 10 <= j faca
+    escreva(j)
+fimenquanto
 fimalgoritmo

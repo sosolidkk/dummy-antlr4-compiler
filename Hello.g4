@@ -100,14 +100,14 @@ logicalOperator:
 
 // IF STATEMENT RULE
 ifStatement:
-    IF OPEN_PARENTHESIS? (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)) (relationalOperator | logicalOperator) (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)) CLOSE_PARENTHESIS? THEN
+    IF OPEN_PARENTHESIS? (VAR_NAME | (INT | FLOAT | STRING | BOOL)) (relationalOperator | logicalOperator) (VAR_NAME | (INT | FLOAT | STRING | BOOL)) CLOSE_PARENTHESIS? THEN
     WS* expressions* WS*
     (ELSE expressions* WS*)*
     END_IF;
 
 // WHILE STATEMENT RULE
 whileStatement:
-    WHILE OPEN_PARENTHESIS? (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)) relationalOperator (VAR_NAME | (TYPE_INT | TYPE_FLOAT | TYPE_STRING | TYPE_BOOL)) CLOSE_PARENTHESIS? DO
+    WHILE OPEN_PARENTHESIS? (VAR_NAME | (INT | FLOAT | STRING | BOOL)) relationalOperator (VAR_NAME | (INT | FLOAT | STRING | BOOL)) CLOSE_PARENTHESIS? DO
     WS* expressions* WS*
     END_WHILE;
 
@@ -117,7 +117,7 @@ funcInt:
     declarations*?
     BEGIN
         (expressions)*
-        (RETURN (TYPE_INT | VAR_NAME))
+        (RETURN (INT | VAR_NAME))
     END_FUNC;
 
 funcFloat:
@@ -125,7 +125,7 @@ funcFloat:
     declarations*?
     BEGIN
         (expressions)*
-        (RETURN (TYPE_FLOAT | VAR_NAME)) WS*
+        (RETURN (FLOAT | VAR_NAME)) WS*
     END_FUNC;
 
 funcBool:
@@ -133,7 +133,7 @@ funcBool:
     declarations*?
     BEGIN
         (expressions)*
-        (RETURN (TYPE_BOOL | VAR_NAME)) WS*
+        (RETURN (BOOL | VAR_NAME)) WS*
     END_FUNC;
 
 funcString:
@@ -141,7 +141,7 @@ funcString:
     declarations*?
     BEGIN
         (expressions)*
-        (RETURN (TYPE_STRING | VAR_NAME)) WS*
+        (RETURN (STRING | VAR_NAME)) WS*
     END_FUNC;
 
 funcVoid:
