@@ -237,7 +237,7 @@ TYPE_VOID: V O I D;
 STRING: ["][a-zA-Z0-9 $&+,:;=?@#|'<>.^*()_\\"%-]+["];
 INT: [-]? DIGIT+;
 FLOAT: [-]? DIGIT+ ([.]DIGIT+)?;
-BOOL: 'VERDADEIRO' | 'FALSO';
+BOOL: (V E R D A D E I R O) | (F A L S O);
 
 VAR_NAME: [a-zA-Z]+[a-zA-Z0-9_]*;
 COMMENT: '//'.*?[\n] -> skip;
