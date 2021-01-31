@@ -221,6 +221,8 @@ COLON: ':';
 
 ASSIGNMENT: '<-';
 
+AND: E;
+OR: O U;
 DENY: N A O;
 MOD: M O D;
 
