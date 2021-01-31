@@ -133,4 +133,4 @@ if __name__ == "__main__":
 
         file.write("\n-- GENERATED TREE BEGIN --\n")
         file.write(str(Trees.toStringTree(tree, None, parser)))
-        file.write("-- GENERATED TREE END --\n")
+        file.write("\n-- GENERATED TREE END --\n")

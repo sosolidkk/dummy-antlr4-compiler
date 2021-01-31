@@ -164,27 +164,53 @@ funcCall:
 /* LEXER RULES */
 /* FRAGMENTS */
 fragment DIGIT: [0-9];
+fragment A : [aA];
+fragment B : [bB];
+fragment C : [cC];
+fragment D : [dD];
+fragment E : [eE];
+fragment F : [fF];
+fragment G : [gG];
+fragment H : [hH];
+fragment I : [iI];
+fragment J : [jJ];
+fragment K : [kK];
+fragment L : [lL];
+fragment M : [mM];
+fragment N : [nN];
+fragment O : [oO];
+fragment P : [pP];
+fragment Q : [qQ];
+fragment R : [rR];
+fragment S : [sS];
+fragment T : [tT];
+fragment U : [uU];
+fragment V : [vV];
+fragment W : [wW];
+fragment X : [xX];
+fragment Y : [yY];
+fragment Z : [zZ];
 
 /* IDS */
-PROGRAM: 'algoritmo';
-BEGIN: 'inicio';
-END: 'fimalgoritmo';
+PROGRAM: A L G O R I T M O;
+BEGIN: I N I C I O;
+END: F I M A L G O R I T M O;
 
-VAR: 'var';
-PRINT: 'escreva';
-READ: 'leia';
+VAR: V A R;
+PRINT: E S C R E V A;
+READ: L E I A;
 
-IF: 'se';
-THEN: 'entao';
-ELSE: 'senao';
-END_IF: 'fimse';
+IF: S E;
+THEN: E N T A O;
+ELSE: S E N A O;
+END_IF: F I M S E;
 
-WHILE: 'enquanto';
-DO: 'faca';
-END_WHILE: 'fimenquanto';
+WHILE: E N Q U A N T O;
+DO: F A C A;
+END_WHILE: F I M E N Q U A N T O;
 
-BREAK: 'break';
-CONTINUE: 'continue';
+BREAK: B R E A K;
+CONTINUE: C O N T I N U E;
 
 OPEN_PARENTHESIS: '(';
 CLOSE_PARENTHESIS: ')';
@@ -194,25 +220,26 @@ SEMI_COLON: ';';
 COLON: ':';
 
 ASSIGNMENT: '<-';
-OR: 'ou';
-AND: 'e';
-DENY: 'nao';
-MOD: 'MOD';
 
-FUNC: 'funcao';
-END_FUNC: 'fimfuncao';
-RETURN: 'retorne';
+AND: E;
+OR: O U;
+DENY: N A O;
+MOD: M O D;
 
-TYPE_STRING: 'caractere';
-TYPE_INT: 'inteiro';
-TYPE_FLOAT: 'real';
-TYPE_BOOL: 'logico';
-TYPE_VOID: 'void';
+FUNC: F U N C A O;
+END_FUNC: F I M F U N C A O;
+RETURN: R E T O R N E;
 
-STRING: ["][a-zA-Z0-9 $&+,:;=?@#|'<>.^*()_%-]+ ["];
+TYPE_STRING: C A R A C T E R E;
+TYPE_INT: I N T E I R O;
+TYPE_FLOAT: R E A L;
+TYPE_BOOL: L O G I C O;
+TYPE_VOID: V O I D;
+
+STRING: ["][a-zA-Z0-9 $&+,:;=?@#|'<>.^*()_\\"%-]+["];
 INT: [-]? DIGIT+;
 FLOAT: [-]? DIGIT+ ([.]DIGIT+)?;
-BOOL: 'VERDADEIRO' | 'FALSO';
+BOOL: (V E R D A D E I R O) | (F A L S O);
 
 VAR_NAME: [a-zA-Z]+[a-zA-Z0-9_]*;
 COMMENT: '//'.*?[\n] -> skip;
