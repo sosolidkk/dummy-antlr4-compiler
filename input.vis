@@ -1,84 +1,11 @@
-algoritmo "helloWorld"
-//
-var my_int: inteiro
-    my_str: caractere
-    my_str, my_str2, my_str3: caractere
-    my_bool: logico
-    my_float: real
-
-funcao soma: inteiro
-var aux: inteiro
+algoritmo "Hello World"
+var i, j: inteiro
 inicio
-	aux <- n + m
-	retorne aux
-fimfuncao
-
-funcao soma_com_params (x, y:  inteiro): inteiro
-inicio
-	retorne x + y
-fimfuncao
-
-inicio
-escreva("hello")
-escreva(10)
-escreva(-10)
-// This line will be ignored
-escreva(10.5)
-escreva(-10.5)
-escreva(VERDADEIRO)
-escreva(FALSO)
-
-leia(my_float)
-leia(my_int)
-
-escreva(my_float, my_int)
-
-a <- 3
-Valor1 <- 1.5
-nome_aluno <- "Jose da Silva"
-sinalizador <- FALSO
-n <- 4
-m <- -9
-
-soma <- 1 + 2
-sub <- 2 - 2
-mult <- 3 * 3
-div <- 4 / 4
-
-resto <- 8 MOD 3
-resto_2 <- 9 % 2
-
-exp <- 8^2
-
-se VERDADEIRO entao
-    escreva("if statement")
-    leia(my_int)
-    a <- 4
-fimse
-
-se (FALSO) entao
-    escreva("if statement with parenthesis")
-fimse
-
-se (10 > 9) entao
-    escreva("if statement with binary operator")
-fimse
-
-se (10 >= 9) entao
-    escreva("if statement with binary operator")
-senao
-    escreva("if statement with else condition")
-fimse
-
-enquanto j <= 10 faca
-    escreva(j)
-    j <- 2
-fimenquanto
-
-res <- soma()
-escreva(res)
-
-res <- soma_com_params(n, m)
-escreva(res)
-
+// Apenas mostra a mensagem hello world
+escreva("Ola, mundo")
+escreva(i)
+j <- i + 1
+i <- j - i
+j <- j * i
+i <- j / i
 fimalgoritmo

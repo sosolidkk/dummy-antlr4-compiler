@@ -124,32 +124,32 @@ funcFloat:
     FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_FLOAT
     declarations*?
     BEGIN
-        WS* (expressions)* WS*
-        WS* (RETURN (TYPE_FLOAT | VAR_NAME)) WS*
+        (expressions)*
+        (RETURN (TYPE_FLOAT | VAR_NAME)) WS*
     END_FUNC;
 
 funcBool:
     FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_BOOL
     declarations*?
     BEGIN
-        WS* (expressions)* WS*
-        WS* (RETURN (TYPE_BOOL | VAR_NAME)) WS*
+        (expressions)*
+        (RETURN (TYPE_BOOL | VAR_NAME)) WS*
     END_FUNC;
 
 funcString:
     FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_STRING
     declarations*?
     BEGIN
-        WS* (expressions)* WS*
-        WS* (RETURN (TYPE_STRING | VAR_NAME)) WS*
+        (expressions)*
+        (RETURN (TYPE_STRING | VAR_NAME)) WS*
     END_FUNC;
 
 funcVoid:
     FUNC VAR_NAME WS* OPEN_PARENTHESIS? funcVarDeclaration*? CLOSE_PARENTHESIS? COLON TYPE_VOID
     declarations*?
     BEGIN
-        WS* (expressions)* WS*
-        WS* (RETURN) WS*
+        (expressions)*
+        (RETURN) WS*
     END_FUNC;
 
 funcCall:
